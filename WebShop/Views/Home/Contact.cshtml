@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["TiTle"] = "Thông tin liên hệ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Begin Main Content Area -->
+<main class="main-content">
+    <div class="breadcrumb-area breadcrumb-height" data-bg-image="~/assets/images/breadcrumb/bg/1-1-1920x373.jpg">
+        <div class="container h-100">
+            <div class="row h-100">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-item">
+                        <h2 class="breadcrumb-heading">Thông tin liên hệ</h2>
+                        <ul>
+                            <li>
+                                <a href="/">Trang chủ <i class="pe-7s-angle-right"></i></a>
+                            </li>
+                            <li>Thông tin liên hệ</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="contact-with-map">
+        <div class="contact-map">
+        </div>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31347.889444455366!2d106.76893447328088!3d10.846421657514018!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752c0b7606676d%3A0x3ad9f14d2c1de128!2zNDQ5IEzDqiBWw6J0IFZp4buHdCwgVOG6oW5nIE5o4bq1IFBow6F0LCBUaOG7nW5nIHBow6FuZywgUXXhuq1uIDEyLCBIw6AgTuG7mWksIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1645332682349!5m2!1svi!2s" width="1500" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+        <div class="contact-form-area section-space-bottom-100">
+            <div class="container">
+                <div class="contact-form-wrap">
+                    <form id="contact-form" class="contact-form" action="https://whizthemes.com/mail-php/mamunur/harmic/harmic.php">
+                        <h4 class="contact-form-title pb-2 mb-7">Send Us a Massage</h4>
+                        <div class="form-field">
+                            <input type="text" name="con_name" placeholder="Name*" class="input-field">
+                        </div>
+                        <div class="form-field mt-6">
+                            <input type="text" name="con_email" placeholder="Email*" class="input-field">
+                        </div>
+                        <div class="form-field mt-6">
+                            <textarea name="con_message" placeholder="Message" class="textarea-field"></textarea>
+                        </div>
+                        <div class="button-wrap mt-8">
+                            <button type="submit" value="submit" class="btn btn btn-custom-size lg-size btn-primary btn-secondary-hover rounded-0" name="submit">Post Message</button>
+                        </div>
+                        <p class="form-messege mt-3 mb-0"></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- Main Content Area End Here -->
