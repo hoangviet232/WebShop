@@ -14,33 +14,70 @@ namespace WebShop.Controllers
     public class SearchController : Controller
     {
         private readonly dbMarketsContext _context;
+        private const int PageSize = 10; // Adjust the value as needed
 
         public SearchController(dbMarketsContext context)
         {
             _context = context;
         }
-        // GET: /<controller>/
-        //[HttpPost]
-        //public IActionResult FindProduct(string keyword)
-        //{
-        //    List<Product> ls = new List<Product>();
-        //    if (string.IsNullOrEmpty(keyword) || keyword.Length < 1)
-        //    {
-        //        return PartialView("ListProductsSearchPartial", null);
-        //    }
-        //    ls = _context.Products.AsNoTracking()
-        //                          .Where(x => x.ProductName.Contains(keyword))
-        //                          .OrderByDescending(x => x.ProductName)
-        //                          .ToList();
-        //    if (ls == null)
-        //    {
-        //        return PartialView("ListProductsSearchPartial", null);
-        //    }
-        //    else
-        //    {
-        //        return PartialView("ListProductsSearchPartial", ls);
-        //    }
-        //}
 
+        //GET: /<controller>/
+        [Route("api/search/findproduct")]
+        [HttpPost]
+        public IActionResult FindProduct(string keyword)
+        {
+            List<Product> ls = new List<Product>();
+
+            if (string.IsNullOrEmpty(keyword) || keyword.Length < 1)
+            {
+                // Select All Products
+                ls = _context.Products.AsNoTracking()
+                                      .Include(a => a.Cat)
+                                      .OrderByDescending(x => x.ProductName)
+                                      .Take(10)
+                                      .ToList();
+            }
+            else
+            {
+                // Select Products matching the keyword
+                ls = _context.Products.AsNoTracking()
+                                      .Include(a => a.Cat)
+                                      .Where(x => x.ProductName.Contains(keyword))
+                                      .OrderByDescending(x => x.ProductName)
+                                      .Take(10)
+                                      .ToList();
+            }
+
+            return PartialView("ListProductsSearchPartial", ls);
+        }
+
+        [Route("api/search/findproduct1")]
+        [HttpPost]
+        public IActionResult FindProduct1(string keyword)
+        {
+            List<Product> ls = new List<Product>();
+
+            if (string.IsNullOrEmpty(keyword) || keyword.Length < 1)
+            {
+                // Select All Products
+                ls = _context.Products.AsNoTracking()
+                                      .Include(a => a.Cat)
+                                      .OrderByDescending(x => x.ProductName)
+                                      .Take(10)
+                                      .ToList();
+            }
+            else
+            {
+                // Select Products matching the keyword
+                ls = _context.Products.AsNoTracking()
+                                      .Include(a => a.Cat)
+                                      .Where(x => x.ProductName.Contains(keyword))
+                                      .OrderByDescending(x => x.ProductName)
+                                      .Take(10)
+                                      .ToList();
+            }
+
+            return PartialView("_ListProductPartialView", ls);
+        }
     }
 }

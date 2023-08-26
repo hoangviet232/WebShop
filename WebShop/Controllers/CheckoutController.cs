@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -40,6 +41,7 @@ namespace WebShop.Controllers
             }
         }
 
+        [Authorize]
         [Route("checkout.html", Name = "Checkout")]
         public IActionResult Index(string returnUrl = null)
         {
@@ -62,6 +64,7 @@ namespace WebShop.Controllers
             return View(model);
         }
 
+        [Authorize]
         [HttpPost]
         [Route("checkout.html", Name = "Checkout")]
         public IActionResult Index(MuaHangVM muaHang)

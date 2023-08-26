@@ -51,16 +51,16 @@
                             <img src="~/assets/images/logo/dark.png" alt="Shop hoa quả">
                         </a>
                         <div class="header-search-area d-none d-lg-block">
-                            <form class="header-searchbox">
-                                    <input id="keyword" name="keyword" class="input-field" type="text" placeholder="Tìm kiếm sản phẩm">
+                           @* <form class="header-searchbox">
+                                <input id="keyword" name="keyword" class="input-field" type="text" placeholder="Tìm kiếm sản phẩm">
                                     <button class="btn btn-outline-whisper btn-primary-hover" type="submit"><i class="pe-7s-search"></i></button>
-                                </form>
+                                </form>*@
                             @*    <div id="records_table" class="results-box">
 
                                 </div>*@
 
 
-                            @*<div>
+                                <div>
                                     <i class="prefix-icon anticon anticon-search opacity-04"></i>
                                     <input id="keyword" name="keyword" type="text" class="form-control" placeholder="Tìm kiếm sản phẩm">
                                 </div>
@@ -71,7 +71,7 @@
                                         </tbody>
 
                                     </table>
-                                </div>*@
+                                </div>
 
                             
 
@@ -478,26 +478,30 @@
     <div class="global-overlay"></div>
 </header>
 
-@section Scripts{
-    @*<script>*@
-        @*$(document).ready(function () {
+@*@section Scripts{
+    <script>
+        $(document).ready(function () {
             $("#keyword").keyup(function () {
-            var strkeyword = $('#keyword').val();
-            $.ajax({
-                url: '/Search/FindProduct/',
-                datatype: "json",
-                type: "POST",
-                data: { keyword: strkeyword },
-                async: true,
-                success: function (results) {
-                    $("#records_table").html("");
-                    $("#records_table").html(results);
-                },
-                error: function (xhr) {
-                    alert('error');
-                }
+                var strkeyword = $('#keyword').val();
+                $.ajax({
+                    url: "api/search/findproduct",
+                    datatype: "json",
+                    type: "POST",
+                    data: { keyword: strkeyword },
+                    async: true,
+                    success: function (results) {
+                        $("#records_table").html("");
+                        $("#records_table").html(results);
+                    },
+                    error: function (xhr) {
+                        alert('error');
+                    }
+                });
             });
         });
-        });*@
+    </script>
 
 }
+*@
+
+      

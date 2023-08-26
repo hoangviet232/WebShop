@@ -77,13 +77,15 @@
                                     <ul>
                                         <li>Thành tiền <span>@Model.Sum(x => x.TotalMoney).ToString("#,##0") VNĐ</span></li>
                                     </ul>
-                                    @if (User.Identity.IsAuthenticated)
-                                    {
-                                        <a href="/checkout.html" class="btn btn-secondary btn-primary-hover">Thanh toán</a>
-                                    }
-                                    else {
-                                        <a href="/dang-nhap.html?returnUrl=/checkout.html" class="btn btn-secondary btn-primary-hover">Thanh toán</a>
-                                    }
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            <a href="/checkout.html" class="btn btn-secondary btn-primary-hover">Thanh toán</a>
+                                        }
+                                        else
+                                        {
+                                            <a href="/dang-nhap.html?returnUrl=/checkout.html" class="btn btn-secondary btn-primary-hover">Thanh toán</a>
+                                        }
+
                                 </div>
                             </div>
                         </div>

@@ -1,0 +1,42 @@
+﻿@model List<Product>
+
+@foreach (var item in Model)
+{
+    // Render product list item HTML here
+    <div class="product-item">
+        <!-- ... Product details ... -->
+        <div id="find-product" class="product-item" data-productprice="@item.Price">
+            <div class="product-img img-zoom-effect">
+                <a>
+                    <img class="img-full" src="~/images/products/@item.Thumb" alt="@item.Title">
+                </a>
+                <div class="product-add-action">
+                    <ul>
+                        <li>
+                            <a >
+                                <i class="pe-7s-cart"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="product-content align-self-center">
+                <a class="product-name pb-2">@item.ProductName</a>
+                <div class="price-box pb-1">
+                    <span class="new-price">@item.Price</span>
+                </div>
+                <div class="rating-box pb-2">
+                    <ul>
+                        <li><i class="pe-7s-star"></i></li>
+                        <li><i class="pe-7s-star"></i></li>
+                        <li><i class="pe-7s-star"></i></li>
+                        <li><i class="pe-7s-star"></i></li>
+                        <li><i class="pe-7s-star"></i></li>
+                    </ul>
+                </div>
+                <p class="short-desc mb-0">@item.ShortDesc</p>
+            </div>
+        </div>
+
+    </div>
+}

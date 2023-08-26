@@ -87,5 +87,26 @@ namespace WebShop.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
+
+        [Route("/Product/FilterProducts")]
+        [HttpGet]
+        public IActionResult FilterProducts(int minPrice, int maxPrice)
+        {
+            try
+            {
+                var filteredProducts = _context.Products
+                    .AsNoTracking()
+                    .Where(x => x.Price >= minPrice && x.Price <= maxPrice)
+                    .OrderBy(x => x.DateCreated)
+                    .ToList();
+
+                return PartialView("_FilteredProductsPartial", filteredProducts);
+            }
+            catch
+            {
+                // Handle any exceptions that might occur during filtering
+                return BadRequest("An error occurred while filtering products.");
+            }
+        }
     }
 }
