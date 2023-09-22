@@ -1,4 +1,4 @@
-/*-----------------------------------------------------------------------------------
+﻿/*-----------------------------------------------------------------------------------
     Template Name: Template Name
     Version: 1.0
 -----------------------------------------------------------------------------------
@@ -18114,6 +18114,10 @@ blockquote .inner-content .user-name {
         width: 150px;
     }
 
+.move-left {
+    position: relative;
+    left: 0px; /* Điều chỉnh giá trị left theo ý muốn */
+}
 /* ---Swiper Slider Border Issues--- */
 .swiper-container.border-issue {
     padding-bottom: 15px;

@@ -40,8 +40,6 @@ namespace WebShop.Controllers
                 .OrderByDescending(x => x.Ordering)
                 .ToList();
 
-       
-
             foreach (var item in lsCats)
             {
                 ProductHomeVM productHome = new ProductHomeVM();

@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 namespace WebShop.Enums
 {
     public enum CacheKeys
@@ -6,3 +6,4 @@ namespace WebShop.Enums
         Categories
     }
 }
+*/

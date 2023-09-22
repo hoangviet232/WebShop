@@ -1,0 +1,42 @@
+﻿@model WebShop.ModelViews.MuaHangVM
+@{
+    ViewData["Title"] = "Mua hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<WebShop.ModelViews.CartItem> Carts = ViewBag.GioHang;
+}
+
+<h3>THÔNG TIN ĐƠN HÀNG</h3>
+<div class="your-order-table table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="cart-product-name">SẢN PHẨM</th>
+                <th class="cart-product-total">THÀNH TIỀN</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Carts.Count() > 0)
+            {
+                foreach (var item in Carts)
+                {
+                    <tr class="cart_item">
+                        <td class="cart-product-name">
+                            @item.product.ProductName<strong class="product-quantity">
+                                × @item.amount
+                            </strong>
+                        </td>
+                        <td class="cart-product-total"><span class="amount">@item.TotalMoney.ToString("#,##0") VNĐ</span></td>
+                    </tr>
+                }
+            }
+
+
+        </tbody>
+        <tfoot>
+            <tr class="order-total">
+                <th>TỔNG ĐƠN HÀNG</th>
+                <td><strong><span class="amount">@Carts.Sum(x => x.TotalMoney).ToString("#,##0") VNĐ</span></strong></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

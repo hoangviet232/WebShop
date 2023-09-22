@@ -139,14 +139,20 @@
                         <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="all-items-tab">
                             <div id="find-product1">
                                 @await Html.PartialAsync("_ListProductPartialView", allProduct)
-                            </div>                         
-                        </div>
-                        @foreach (var item in Model.Products)
-                        {
-                            <div class="tab-pane fade" id="@item.category.Alias" role="tabpanel" aria-labelledby="fresh-fruits-tab">
-                                @await Html.PartialAsync("_ListProductPartialView", item.lsProducts)
                             </div>
-                        }
+                            <div class="pagination-area pt-10">
+                                <ul id="pagination" class="pagination justify-content-center">
+                                    <pager class="pager-container" options="@PagedListRenderOptions.Bootstrap4PageNumbersOnly" asp-area="" asp-controller="Product" asp-action="Index" />
+                                </ul>
+                            </div>
+                        </div>
+                            @foreach (var item in Model.Products)
+                            {
+                                <div class="tab-pane fade" id="@item.category.Alias" role="tabpanel" aria-labelledby="fresh-fruits-tab">
+                                    @await Html.PartialAsync("_ListProductPartialView", item.lsProducts)
+                                </div>
+                             
+                            }                                        
                     </div>                 
                 </div>
             </div>

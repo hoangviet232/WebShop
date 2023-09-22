@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -90,16 +90,35 @@ namespace WebShop.Controllers
 
         [Route("/Product/FilterProducts")]
         [HttpGet]
-        public IActionResult FilterProducts(int minPrice, int maxPrice)
+        public IActionResult FilterProducts(int minPrice, int maxPrice, int sortOption)
         {
             try
             {
-                var filteredProducts = _context.Products
+                var filteredProductsQuery = _context.Products
                     .AsNoTracking()
-                    .Where(x => x.Price >= minPrice && x.Price <= maxPrice)
-                    .OrderBy(x => x.DateCreated)
-                    .ToList();
+                    .Where(x => x.Price >= minPrice && x.Price <= maxPrice);
 
+                // Sắp xếp theo tiêu chí đã chọn
+                switch (sortOption)
+                {
+                    case 1:
+                        filteredProductsQuery = filteredProductsQuery.OrderBy(x => x.Price);
+                        break;
+
+                    case 2:
+                        filteredProductsQuery = filteredProductsQuery.OrderByDescending(x => x.Price);
+                        break;
+
+                    case 3:
+                        filteredProductsQuery = filteredProductsQuery.OrderByDescending(x => x.DateCreated);
+                        break;
+
+                    case 4:
+                        filteredProductsQuery = filteredProductsQuery.OrderBy(x => x.ProductName);
+                        break;
+                }
+
+                var filteredProducts = filteredProductsQuery.ToList();
                 return PartialView("_FilteredProductsPartial", filteredProducts);
             }
             catch

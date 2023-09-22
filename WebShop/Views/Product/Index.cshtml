@@ -6,16 +6,7 @@
     int PageCurrent = ViewBag.CurrentPage;
     int PageNext = PageCurrent + 1;
 }
-<style>
-    .move-left {
-        position: relative;
-        left: -50px; /* Điều chỉnh giá trị left theo ý muốn */
-    }
 
-    .price-range1{
-     
-    }
-</style>
 
 <!-- Begin Main Content Area -->
 <main class="main-content">
@@ -290,6 +281,15 @@
                                     <option data-price="100000:@Int32.MaxValue" value="4">100000+</option>
                                 </select>
                             </li>
+                            <li class="short1">
+                                <select id="sort1" class="nice-select wide rounded-0">
+                                    <option value="1">Sort by Low Price</option>
+                                    <option value="2">Sort by High Price</option>
+                                    <option value="3">Sort by  Day</option>
+                                    <option value="4">Sort by  Name </option>
+
+                                </select>
+                            </li>
                         </ul>
                     </div>
                     <div class="tab-content text-charcoal pt-8">
@@ -517,6 +517,28 @@
             });
         });
 
+        $("#sort1").change(function () {
+            var selectedOption = $(this).find(':selected');
+            var sortOption = selectedOption.val();
+
+            $.ajax({
+                url: "/Product/FilterProducts",  // Điều chỉnh đường dẫn API tương ứng
+                type: 'GET',
+                data: {
+                    minPrice: $("#slider-range").slider("values")[0],
+                    maxPrice: $("#slider-range").slider("values")[1],
+                    sortOption: sortOption  // Truyền tùy chọn sắp xếp
+                },
+                dataType: 'html',
+                success: function (filteredProductsHtml) {
+                    $("#product-list").html(filteredProductsHtml);
+                },
+                error: function (xhr) {
+                    console.log('Error:', xhr);
+                }
+            });
+        });
+        ;
    
     </script>
 }

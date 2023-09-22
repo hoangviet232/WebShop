@@ -14,6 +14,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebShop.Models;
+using Microsoft.OpenApi.Models;
+using WebShop.ModelViews;
+using Microsoft.AspNetCore.Http;
+using TestMail.Service;
 
 namespace WebShop
 {
@@ -31,7 +35,14 @@ namespace WebShop
         {
             var connectString = Configuration.GetConnectionString("WebShopConnectionString");
             services.AddDbContext<dbMarketsContext>(options => options.UseSqlServer(connectString));
+            services.AddOptions();
 
+            // Kích hoạt Options
+            var mailsettings = Configuration.GetSection("MailSettings");  // đọc config
+            services.Configure<MailSettings>(mailsettings);                // đăng ký để Inject
+            services.AddTransient<ISendMailService, SendMailServiceeee>();
+            /*            services.AddTransient<EmailService>(); // Assuming EmailService is the correct class name
+            */
             services.AddSingleton<HtmlEncoder>(HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.All }));
             services.AddSession();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -45,7 +56,10 @@ namespace WebShop
                 });
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
-
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+            });
             services.AddNotyf(config =>
             {
                 config.DurationInSeconds = 3;
@@ -71,6 +85,7 @@ namespace WebShop
             app.UseStaticFiles();
             app.UseSession();
             app.UseRouting();
+            app.UseSwagger();
 
             app.UseAuthentication();
             app.UseAuthorization();
@@ -83,6 +98,23 @@ namespace WebShop
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                /*          endpoints.MapGet("/testmail", async context =>
+                          {
+                              // Lấy dịch vụ sendmailservice
+                              var sendmailservice = context.RequestServices.GetService<ISendMailService>();
+
+                              MailContent content = new MailContent
+                              {
+                                  To = "vietkutioppa@gmail.com",
+                                  Subject = "Kiểm tra thử",
+                                  Body = "<p><strong> Xin chào .net</strong></p>"
+                              };
+
+                              await sendmailservice.SendMail(content);
+                              await context.Response.WriteAsync("Send mail");
+                          }
+                          );*/
             });
         }
     }

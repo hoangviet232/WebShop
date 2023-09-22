@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TestMail.Service;
 using WebShop.Extension;
 using WebShop.Helpper;
 using WebShop.Models;
@@ -23,11 +24,13 @@ namespace WebShop.Controllers
     {
         private readonly dbMarketsContext _context;
         public INotyfService _notyfService { get; }
+
         public AccountsController(dbMarketsContext context, INotyfService notyfService)
         {
             _context = context;
             _notyfService = notyfService;
         }
+
         [HttpGet]
         [AllowAnonymous]
         public IActionResult ValidatePhone(string Phone)
@@ -39,13 +42,13 @@ namespace WebShop.Controllers
                     return Json(data: "Số điện thoại : " + Phone + "đã được sử dụng");
 
                 return Json(data: true);
-                
             }
             catch
             {
                 return Json(data: true);
             }
         }
+
         [HttpGet]
         [AllowAnonymous]
         public IActionResult ValidateEmail(string Email)
@@ -62,6 +65,7 @@ namespace WebShop.Controllers
                 return Json(data: true);
             }
         }
+
         [Route("tai-khoan-cua-toi.html", Name = "Dashboard")]
         public IActionResult Dashboard()
         {
@@ -80,13 +84,13 @@ namespace WebShop.Controllers
                     ViewBag.DonHang = lsDonHang;
                     return View(khachhang);
                 }
-                    
             }
             return RedirectToAction("Login");
         }
+
         [HttpGet]
         [AllowAnonymous]
-        [Route("dang-ky.html",Name ="DangKy")]
+        [Route("dang-ky.html", Name = "DangKy")]
         public IActionResult DangkyTaiKhoan()
         {
             return View();
@@ -94,11 +98,19 @@ namespace WebShop.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [Route("dang-ky.html",Name ="DangKy")]
-        public async Task<IActionResult> DangkyTaiKhoan(RegisterViewModel taikhoan)
+        [Route("dang-ky.html", Name = "DangKy")]
+        public async Task<IActionResult> DangkyTaiKhoan(RegisterViewModel taikhoan, [FromServices] ISendMailService sendMailService)
         {
+            var emailContent = new MailContent
+            {
+                To = taikhoan.Email, // Set the email recipient to the value from muaHang.Email
+                Subject = "HARMIC",
+                Body = "<p><strong> Đăng kí tài khoản thành công </strong></p>"
+            };
             try
             {
+                await sendMailService.SendMail(emailContent);
+
                 if (ModelState.IsValid)
                 {
                     string salt = Utilities.GetRandomKey();
@@ -132,7 +144,7 @@ namespace WebShop.Controllers
                         _notyfService.Success("Đăng ký thành công");
                         return RedirectToAction("Dashboard", "Accounts");
                     }
-                    catch 
+                    catch
                     {
                         return RedirectToAction("DangkyTaiKhoan", "Accounts");
                     }
@@ -142,25 +154,27 @@ namespace WebShop.Controllers
                     return View(taikhoan);
                 }
             }
-            catch 
+            catch
             {
                 return View(taikhoan);
             }
         }
+
         [AllowAnonymous]
-        [Route("dang-nhap.html", Name ="DangNhap")]
+        [Route("dang-nhap.html", Name = "DangNhap")]
         public IActionResult Login(string returnUrl = null)
         {
             var taikhoanID = HttpContext.Session.GetString("CustomerId");
             if (taikhoanID != null)
             {
-                return RedirectToAction("Dashboard", "Accounts");   
+                return RedirectToAction("Dashboard", "Accounts");
             }
             return View();
         }
+
         [HttpPost]
         [AllowAnonymous]
-        [Route("dang-nhap.html", Name ="DangNhap")]
+        [Route("dang-nhap.html", Name = "DangNhap")]
         public async Task<IActionResult> Login(LoginViewModel customer, string returnUrl)
         {
             try
@@ -174,7 +188,7 @@ namespace WebShop.Controllers
 
                     if (khachhang == null) return RedirectToAction("DangkyTaiKhoan");
                     string pass = (customer.Password + khachhang.Salt.Trim()).ToMD5();
-                    if(khachhang.Password != pass)
+                    if (khachhang.Password != pass)
                     {
                         _notyfService.Success("Thông tin đăng nhập chưa chính xác");
                         return View(customer);
@@ -216,8 +230,9 @@ namespace WebShop.Controllers
             }
             return View(customer);
         }
+
         [HttpGet]
-        [Route("dang-xuat.html",Name ="DangXuat")]
+        [Route("dang-xuat.html", Name = "DangXuat")]
         public IActionResult Logout()
         {
             HttpContext.SignOutAsync();
@@ -250,7 +265,7 @@ namespace WebShop.Controllers
                     }
                 }
             }
-            catch 
+            catch
             {
                 _notyfService.Success("Thay đổi mật khẩu không thành công");
                 return RedirectToAction("Dashboard", "Accounts");
