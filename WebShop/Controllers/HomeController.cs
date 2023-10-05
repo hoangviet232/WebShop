@@ -16,9 +16,9 @@ namespace WebShop.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly dbMarketsContext _context;
+        private readonly textdbMarketsContext _context;
 
-        public HomeController(ILogger<HomeController> logger, dbMarketsContext context)
+        public HomeController(ILogger<HomeController> logger, textdbMarketsContext context)
         {
             _logger = logger;
             _context = context;

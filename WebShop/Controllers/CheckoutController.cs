@@ -21,11 +21,11 @@ namespace WebShop.Controllers
 {
     public class CheckoutController : Controller
     {
-        private readonly dbMarketsContext _context;
+        private readonly textdbMarketsContext _context;
 
         public INotyfService _notyfService { get; }
 
-        public CheckoutController(dbMarketsContext context, INotyfService notyfService)
+        public CheckoutController(textdbMarketsContext context, INotyfService notyfService)
         {
             _context = context;
             _notyfService = notyfService;

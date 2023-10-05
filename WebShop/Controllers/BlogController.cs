@@ -13,13 +13,15 @@ namespace WebShop.Controllers
 {
     public class BlogController : Controller
     {
-        private readonly dbMarketsContext _context;
-        public BlogController(dbMarketsContext context)
+        private readonly textdbMarketsContext _context;
+
+        public BlogController(textdbMarketsContext context)
         {
             _context = context;
         }
+
         // GET: /<controller>/
-        [Route("blogs.html",Name =("Blog"))]
+        [Route("blogs.html", Name = ("Blog"))]
         public IActionResult Index(int? page)
         {
             var pageNumber = page == null || page <= 0 ? 1 : page.Value;
@@ -32,7 +34,8 @@ namespace WebShop.Controllers
             ViewBag.CurrentPage = pageNumber;
             return View(models);
         }
-        [Route("/tin-tuc/{Alias}-{id}.html",Name ="TinChiTiet")]
+
+        [Route("/tin-tuc/{Alias}-{id}.html", Name = "TinChiTiet")]
         public IActionResult Details(int id)
         {
             var tindang = _context.TinDangs.AsNoTracking().SingleOrDefault(x => x.PostId == id);

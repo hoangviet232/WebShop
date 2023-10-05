@@ -1,4 +1,4 @@
-using System;
+﻿/*using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using WebShop.ModelViews;
@@ -371,4 +371,4 @@ namespace WebShop.Models
 
         public DbSet<WebShop.ModelViews.LoginViewModel> LoginViewModel { get; set; }
     }
-}
+}*/

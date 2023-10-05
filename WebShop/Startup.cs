@@ -34,7 +34,7 @@ namespace WebShop
         public void ConfigureServices(IServiceCollection services)
         {
             var connectString = Configuration.GetConnectionString("WebShopConnectionString");
-            services.AddDbContext<dbMarketsContext>(options => options.UseSqlServer(connectString));
+            services.AddDbContext<textdbMarketsContext>(options => options.UseSqlServer(connectString));
             services.AddOptions();
 
             // Kích hoạt Options

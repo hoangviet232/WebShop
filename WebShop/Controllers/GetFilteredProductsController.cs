@@ -6,10 +6,10 @@ namespace WebShop.Controllers
 {
     public class GetFilteredProductsController : Controller
     {
-        private readonly dbMarketsContext _context;
+        private readonly textdbMarketsContext _context;
         private const int PageSize = 10; // Adjust the value as needed
 
-        public GetFilteredProductsController(dbMarketsContext context)
+        public GetFilteredProductsController(textdbMarketsContext context)
         {
             _context = context;
         }

@@ -19,10 +19,10 @@ namespace WebShop.Areas.Admin.Controllers
     [Authorize]
     public class AdminAccountsController : Controller
     {
-        private readonly dbMarketsContext _context;
+        private readonly textdbMarketsContext _context;
         public INotyfService _notyfService { get; }
 
-        public AdminAccountsController(dbMarketsContext context, INotyfService notyfService)
+        public AdminAccountsController(textdbMarketsContext context, INotyfService notyfService)
         {
             _context = context;
             _notyfService = notyfService;

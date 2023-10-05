@@ -15,9 +15,9 @@ namespace WebShop.Areas.Admin.Controllerst
     [Authorize]
     public class SearchController : Controller
     {
-        private readonly dbMarketsContext _context;
+        private readonly textdbMarketsContext _context;
 
-        public SearchController(dbMarketsContext context)
+        public SearchController(textdbMarketsContext context)
         {
             _context = context;
         }

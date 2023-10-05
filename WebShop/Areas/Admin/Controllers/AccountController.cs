@@ -22,10 +22,10 @@ namespace WebShop.Areas.Admin.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private readonly dbMarketsContext _context;
+        private readonly textdbMarketsContext _context;
         public INotyfService _notyfService { get; }
 
-        public AccountController(dbMarketsContext context, INotyfService notyfService)
+        public AccountController(textdbMarketsContext context, INotyfService notyfService)
         {
             _context = context;
             _notyfService = notyfService;

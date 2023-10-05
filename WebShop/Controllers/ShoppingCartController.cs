@@ -15,13 +15,15 @@ namespace WebShop.Controllers
 {
     public class ShoppingCartController : Controller
     {
-        private readonly dbMarketsContext _context;
+        private readonly textdbMarketsContext _context;
         public INotyfService _notyfService { get; }
-        public ShoppingCartController(dbMarketsContext context, INotyfService notyfService)
+
+        public ShoppingCartController(textdbMarketsContext context, INotyfService notyfService)
         {
             _context = context;
             _notyfService = notyfService;
         }
+
         public List<CartItem> GioHang
         {
             get
@@ -67,14 +69,15 @@ namespace WebShop.Controllers
                 _notyfService.Success("Thêm sản phẩm thành công");
                 return Json(new { success = true });
             }
-            catch 
+            catch
             {
                 return Json(new { success = false });
             }
         }
+
         [HttpPost]
         [Route("api/cart/update")]
-        public IActionResult UpdateCart(int productID,int? amount)
+        public IActionResult UpdateCart(int productID, int? amount)
         {
             //Lay gio hang ra de xu ly
             var cart = HttpContext.Session.Get<List<CartItem>>("GioHang");
@@ -102,7 +105,6 @@ namespace WebShop.Controllers
         [Route("api/cart/remove")]
         public ActionResult Remove(int productID)
         {
-            
             try
             {
                 List<CartItem> gioHang = GioHang;
@@ -115,12 +117,13 @@ namespace WebShop.Controllers
                 HttpContext.Session.Set<List<CartItem>>("GioHang", gioHang);
                 return Json(new { success = true });
             }
-            catch 
+            catch
             {
                 return Json(new { success = false });
             }
         }
-        [Route("cart.html",Name ="Cart")]
+
+        [Route("cart.html", Name = "Cart")]
         public IActionResult Index()
         {
             return View(GioHang);

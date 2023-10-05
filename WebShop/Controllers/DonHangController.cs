@@ -15,13 +15,15 @@ namespace WebShop.Controllers
 {
     public class DonHangController : Controller
     {
-        private readonly dbMarketsContext _context;
+        private readonly textdbMarketsContext _context;
         public INotyfService _notyfService { get; }
-        public DonHangController(dbMarketsContext context, INotyfService notyfService)
+
+        public DonHangController(textdbMarketsContext context, INotyfService notyfService)
         {
             _context = context;
             _notyfService = notyfService;
         }
+
         [HttpPost]
         public async Task<IActionResult> Details(int? id)
         {
@@ -50,9 +52,8 @@ namespace WebShop.Controllers
                 donHang.DonHang = donhang;
                 donHang.ChiTietDonHang = chitietdonhang;
                 return PartialView("Details", donHang);
-                
             }
-            catch 
+            catch
             {
                 return NotFound();
             }

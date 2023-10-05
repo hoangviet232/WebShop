@@ -22,10 +22,10 @@ namespace WebShop.Controllers
     [Authorize]
     public class AccountsController : Controller
     {
-        private readonly dbMarketsContext _context;
+        private readonly textdbMarketsContext _context;
         public INotyfService _notyfService { get; }
 
-        public AccountsController(dbMarketsContext context, INotyfService notyfService)
+        public AccountsController(textdbMarketsContext context, INotyfService notyfService)
         {
             _context = context;
             _notyfService = notyfService;
@@ -103,7 +103,7 @@ namespace WebShop.Controllers
         {
             var emailContent = new MailContent
             {
-                To = taikhoan.Email, // Set the email recipient to the value from muaHang.Email
+                To = taikhoan.Email,
                 Subject = "HARMIC",
                 Body = "<p><strong> Đăng kí tài khoản thành công </strong></p>"
             };
@@ -117,6 +117,7 @@ namespace WebShop.Controllers
                     Customer khachhang = new Customer
                     {
                         FullName = taikhoan.FullName,
+                        Address = taikhoan.Address,
                         Phone = taikhoan.Phone.Trim().ToLower(),
                         Email = taikhoan.Email.Trim().ToLower(),
                         Password = (taikhoan.Password + salt.Trim()).ToMD5(),

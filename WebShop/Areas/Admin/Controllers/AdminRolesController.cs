@@ -15,11 +15,11 @@ namespace WebShop.Areas.Admin.Controllers
     [Authorize]
     public class AdminRolesController : Controller
     {
-        private readonly dbMarketsContext _context;
+        private readonly textdbMarketsContext _context;
 
         public INotyfService _notyfService { get; }
 
-        public AdminRolesController(dbMarketsContext context, INotyfService notyfService)
+        public AdminRolesController(textdbMarketsContext context, INotyfService notyfService)
         {
             _context = context;
             _notyfService = notyfService;

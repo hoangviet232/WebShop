@@ -15,9 +15,9 @@ namespace WebShop.Areas.Admin.Controllers
     [Authorize]
     public class AdminCustomersController : Controller
     {
-        private readonly dbMarketsContext _context;
+        private readonly textdbMarketsContext _context;
 
-        public AdminCustomersController(dbMarketsContext context)
+        public AdminCustomersController(textdbMarketsContext context)
         {
             _context = context;
         }

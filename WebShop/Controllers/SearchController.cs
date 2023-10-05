@@ -13,10 +13,10 @@ namespace WebShop.Controllers
 {
     public class SearchController : Controller
     {
-        private readonly dbMarketsContext _context;
+        private readonly textdbMarketsContext _context;
         private const int PageSize = 10; // Adjust the value as needed
 
-        public SearchController(dbMarketsContext context)
+        public SearchController(textdbMarketsContext context)
         {
             _context = context;
         }
