@@ -44,6 +44,7 @@ namespace WebShop.Controllers
             }
         }
 
+        [HttpGet]
         [Authorize]
         [Route("checkout.html", Name = "Checkout")]
         public IActionResult Index(string returnUrl = null)
@@ -96,13 +97,13 @@ namespace WebShop.Controllers
         [Authorize]
         [HttpPost]
         [Route("checkout.html", Name = "Checkout")]
-        public async Task<IActionResult> Index(MuaHangVM muaHang, [FromServices] ISendMailService sendMailService)
-
+        public async Task<IActionResult> Index(MuaHangVM muaHang, XemDonHang xemDonHang, [FromServices] ISendMailService sendMailService)
         {
-            //Lay ra gio hang de xu ly
+            // Lấy ra giỏ hàng để xử lý
             var cart = HttpContext.Session.Get<List<CartItem>>("GioHang");
             var taikhoanID = HttpContext.Session.GetString("CustomerId");
             MuaHangVM model = new MuaHangVM();
+
             if (taikhoanID != null)
             {
                 var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.CustomerId == Convert.ToInt32(taikhoanID));
@@ -116,31 +117,23 @@ namespace WebShop.Controllers
                 _context.SaveChanges();
             }
 
-            var emailContent = new MailContent
-            {
-                To = muaHang.Email,
-                Subject = "Harmic",
-                Body = @"<h3> Đặt hàng thành công</h3>"
-            };
             try
             {
-                await sendMailService.SendMail(emailContent);
-
                 if (ModelState.IsValid)
                 {
-                    //Khoi tao don hang
+                    // Khởi tạo đơn hàng
                     Order donhang = new Order();
                     donhang.CustomerId = model.CustomerId;
                     donhang.Address = model.Address;
                     donhang.OrderDate = DateTime.Now;
-                    donhang.TransactStatusId = 1;//Don hang moi
+                    donhang.TransactStatusId = 1; // Đơn hàng mới
                     donhang.Deleted = false;
                     donhang.Paid = false;
                     donhang.TotalMoney = Convert.ToInt32(cart.Sum(x => x.TotalMoney));
                     _context.Add(donhang);
                     _context.SaveChanges();
-                    //tao danh sach don hang
 
+                    // Tạo danh sách chi tiết đơn hàng
                     foreach (var item in cart)
                     {
                         OrderDetail orderDetail = new OrderDetail();
@@ -151,23 +144,132 @@ namespace WebShop.Controllers
                         orderDetail.Price = item.product.Price;
                         orderDetail.CreateDate = DateTime.Now;
                         _context.Add(orderDetail);
-                    }
-                    _context.SaveChanges();
-                    //clear gio hang
-                    HttpContext.Session.Remove("GioHang");
-                    //Xuat thong bao
-                    _notyfService.Success("Đơn hàng đặt thành công");
 
-                    //cap nhat thong tin khach hang
+                        // Gửi email thông tin đơn hàng
+                        // Tính tổng tiền đơn hàng
+                        double totalOrderMoney = cart.Sum(item => item.TotalMoney);
+
+                        // Gửi email thông tin đơn hàng
+                        var emailContent = new MailContent
+                        {
+                            To = muaHang.Email,
+                            Subject = "HARMIC - Thông tin đơn hàng",
+                            Body = $@"
+<html>
+<head>
+    <style>
+        body {{
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }}
+        .container {{
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+        }}
+        h1 {{
+            color: #333;
+            text-align: center;
+        }}
+        .info {{
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }}
+        .info p {{
+            margin: 10px 0;
+            color: #666;
+        }}
+        .info strong {{
+            color: #007bff;
+        }}
+        table {{
+            width: 100%;
+            border-collapse: collapse;
+        }}
+        th, td {{
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }}
+        th {{
+            background-color: #f2f2f2;
+        }}
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <h1>Đặt hàng thành công</h1>
+        <div class='info'>
+            <p><strong>Thông tin đơn hàng:</strong></p>
+            <p><strong>Họ và tên:</strong> {muaHang.FullName}</p>
+            <p><strong>Điện thoại:</strong> {muaHang.Phone}</p>
+            <p><strong>Địa chỉ nhận hàng:</strong> {muaHang.Address}</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Đơn giá</th>
+                    <th>Tổng tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                {string.Join("", cart.Select((item, index) => $@"
+                    <tr>
+                        <td>{index + 1}</td>
+                        <td>{item.product.ProductName}</td>
+                        <td>{item.amount}</td>
+                        <td>{item.product.Price}</td>
+                        <td>{item.TotalMoney}</td>
+                    </tr>"))}
+            </tbody>
+        </table>
+
+        <div class='info'>
+            <p><strong>Tổng tiền đơn hàng:</strong> {totalOrderMoney}</p>
+            <p><strong>Ngày đặt:</strong> {DateTime.Now}</p>
+        </div>
+    </div>
+</body>
+</html>"
+                        };
+
+                        await sendMailService.SendMail(emailContent);
+                    }
+
+                    // Gửi email thông tin đơn hàng
+
+                    // Lưu thay đổi vào cơ sở dữ liệu
+                    _context.SaveChanges();
+
+                    // Xóa giỏ hàng sau khi đặt hàng thành công
+                    HttpContext.Session.Remove("GioHang");
+
+                    // Hiển thị thông báo thành công và chuyển hướng đến trang Success
+                    _notyfService.Success("Đơn hàng đặt thành công");
                     return RedirectToAction("Success");
                 }
             }
             catch
             {
+                // Trả về view và hiển thị lại giỏ hàng nếu có lỗi xảy ra
                 ViewData["lsTinhThanh"] = new SelectList(_context.Locations.Where(x => x.Levels == 1).OrderBy(x => x.Type).ToList(), "Location", "Name");
                 ViewBag.GioHang = cart;
                 return View(model);
             }
+
+            // Trả về view nếu không có lỗi và không thành công
             ViewData["lsTinhThanh"] = new SelectList(_context.Locations.Where(x => x.Levels == 1).OrderBy(x => x.Type).ToList(), "Location", "Name");
             ViewBag.GioHang = cart;
             return View(model);

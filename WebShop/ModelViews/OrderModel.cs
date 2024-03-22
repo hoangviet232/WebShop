@@ -9,6 +9,7 @@ namespace WebShop.ModelViews
         public string Phone { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }
+        public string City { get; set; }
         public List<CartItem> CartItems { get; set; }
         public decimal TotalAmount { get; set; }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace WebShop.ModelViews
 {
     public class SearchProductVM
@@ -8,5 +9,6 @@ namespace WebShop.ModelViews
         public int? Price { get; set; }
         public string Thumb { get; set; }
         public string Alias { get; set; }
+        public string Description { get; set; }
     }
 }

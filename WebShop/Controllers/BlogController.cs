@@ -20,7 +20,7 @@ namespace WebShop.Controllers
             _context = context;
         }
 
-        // GET: /<controller>/
+        [HttpGet]
         [Route("blogs.html", Name = ("Blog"))]
         public IActionResult Index(int? page)
         {
@@ -35,6 +35,7 @@ namespace WebShop.Controllers
             return View(models);
         }
 
+        [HttpGet]
         [Route("/tin-tuc/{Alias}-{id}.html", Name = "TinChiTiet")]
         public IActionResult Details(int id)
         {

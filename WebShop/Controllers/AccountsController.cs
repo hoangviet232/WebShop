@@ -101,18 +101,82 @@ namespace WebShop.Controllers
         [Route("dang-ky.html", Name = "DangKy")]
         public async Task<IActionResult> DangkyTaiKhoan(RegisterViewModel taikhoan, [FromServices] ISendMailService sendMailService)
         {
-            var emailContent = new MailContent
-            {
-                To = taikhoan.Email,
-                Subject = "HARMIC",
-                Body = "<p><strong> Đăng kí tài khoản thành công </strong></p>"
-            };
             try
             {
-                await sendMailService.SendMail(emailContent);
+                var ktemail = await _context.Customers.FirstOrDefaultAsync(x => x.Email.ToLower() == taikhoan.Email.ToLower());
+                if (ktemail != null)
+                {
+                    ModelState.AddModelError(string.Empty, "Email đã được sử dụng.");
+                    return View(taikhoan);
+                }
+                var ktsdt = await _context.Customers.FirstOrDefaultAsync(x => x.Phone.ToLower() == taikhoan.Phone.ToLower());
+                if (ktsdt != null)
+                {
+                    ModelState.AddModelError(string.Empty, "Số điện thoại đã được sử dụng.");
+                    return View(taikhoan);
+                }
 
+                // Kiểm tra dữ liệu hợp lệ trước khi gửi email
                 if (ModelState.IsValid)
                 {
+                    var emailContent = new MailContent
+                    {
+                        To = taikhoan.Email,
+                        Subject = "HARMIC - Đăng kí tài khoản thành công",
+                        Body = $@"
+                    <html>
+                    <head>
+                        <style>
+                            body {{
+                                font-family: Arial, sans-serif;
+                                margin: 0;
+                                padding: 0;
+                            }}
+                            .container {{
+                                max-width: 600px;
+                                margin: 20px auto;
+                                padding: 20px;
+                                border: 1px solid #ccc;
+                                border-radius: 10px;
+                                background-color: #f9f9f9;
+                            }}
+                            h1 {{
+                                color: #333;
+                                text-align: center;
+                            }}
+                            .info {{
+                                margin-top: 20px;
+                                padding: 20px;
+                                border: 1px solid #ddd;
+                                border-radius: 5px;
+                                background-color: #fff;
+                            }}
+                            .info p {{
+                                margin: 10px 0;
+                            }}
+                            .info strong {{
+                                color: #007bff;
+                            }}
+                        </style>
+                    </head>
+                    <body>
+                        <div class='container'>
+                            <h1>Đăng kí tài khoản thành công</h1>
+                            <div class='info'>
+                                <p><strong>Thông tin tài khoản:</strong></p>
+                                <p><strong>Họ và tên:</strong> {taikhoan.FullName}</p>
+                                <p><strong>Địa chỉ email:</strong> {taikhoan.Email}</p>
+                                <p><strong>Điện thoại:</strong> {taikhoan.Phone}</p>
+                                <p><strong>Địa chỉ:</strong> {taikhoan.Address}</p>
+                            </div>
+                        </div>
+                    </body>
+                    </html>"
+                    };
+
+                    await sendMailService.SendMail(emailContent);
+
+                    // Thêm thông tin tài khoản vào cơ sở dữ liệu
                     string salt = Utilities.GetRandomKey();
                     Customer khachhang = new Customer
                     {
@@ -125,30 +189,23 @@ namespace WebShop.Controllers
                         Salt = salt,
                         CreateDate = DateTime.Now
                     };
-                    try
-                    {
-                        _context.Add(khachhang);
-                        await _context.SaveChangesAsync();
-                        //Lưu Session MaKh
-                        HttpContext.Session.SetString("CustomerId", khachhang.CustomerId.ToString());
-                        var taikhoanID = HttpContext.Session.GetString("CustomerId");
 
-                        //Identity
-                        var claims = new List<Claim>
-                        {
-                            new Claim(ClaimTypes.Name,khachhang.FullName),
-                            new Claim("CustomerId", khachhang.CustomerId.ToString())
-                        };
-                        ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "login");
-                        ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-                        await HttpContext.SignInAsync(claimsPrincipal);
-                        _notyfService.Success("Đăng ký thành công");
-                        return RedirectToAction("Dashboard", "Accounts");
-                    }
-                    catch
-                    {
-                        return RedirectToAction("DangkyTaiKhoan", "Accounts");
-                    }
+                    _context.Add(khachhang);
+                    await _context.SaveChangesAsync();
+
+                    // Đăng nhập và chuyển hướng đến trang Dashboard
+                    HttpContext.Session.SetString("CustomerId", khachhang.CustomerId.ToString());
+                    var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, khachhang.FullName),
+                new Claim("CustomerId", khachhang.CustomerId.ToString())
+            };
+                    ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "login");
+                    ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                    await HttpContext.SignInAsync(claimsPrincipal);
+
+                    _notyfService.Success("Đăng ký thành công");
+                    return RedirectToAction("Dashboard", "Accounts");
                 }
                 else
                 {
@@ -159,6 +216,11 @@ namespace WebShop.Controllers
             {
                 return View(taikhoan);
             }
+        }
+
+        private Task<string> RenderViewToStringAsync(string v, RegisterViewModel taikhoan)
+        {
+            throw new NotImplementedException();
         }
 
         [AllowAnonymous]

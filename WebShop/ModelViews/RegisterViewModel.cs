@@ -35,6 +35,8 @@ namespace WebShop.ModelViews
         [MinLength(5, ErrorMessage = "Bạn cần đặt mật khẩu tối thiểu 5 ký tự")]
         public string Password { get; set; }
 
+        public string City { get; set; }
+
         [MinLength(5, ErrorMessage = "Bạn cần đặt mật khẩu tối thiểu 5 ký tự")]
         [Display(Name = "Nhập lại mật khẩu")]
         [Compare("Password", ErrorMessage = "Nhập lại mật khẩu không đúng")]

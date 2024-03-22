@@ -58,5 +58,11 @@ namespace WebShop.Controllers
                 return NotFound();
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            return View();
+        }
     }
 }

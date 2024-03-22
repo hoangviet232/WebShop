@@ -56,10 +56,7 @@ namespace WebShop
                 });
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
-            });
+
             services.AddNotyf(config =>
             {
                 config.DurationInSeconds = 3;
@@ -85,7 +82,6 @@ namespace WebShop
             app.UseStaticFiles();
             app.UseSession();
             app.UseRouting();
-            app.UseSwagger();
 
             app.UseAuthentication();
             app.UseAuthorization();

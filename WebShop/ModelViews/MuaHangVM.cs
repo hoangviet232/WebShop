@@ -17,5 +17,7 @@ namespace WebShop.ModelViews
 
         [Required(ErrorMessage = "Địa chỉ nhận hàng")]
         public string Address { get; set; }
+
+        public string City { get; set; }
     }
 }

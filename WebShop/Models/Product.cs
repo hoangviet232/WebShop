@@ -18,8 +18,10 @@ namespace WebShop.Models
         public string ProductName { get; set; }
         public string ShortDesc { get; set; }
         public string Description { get; set; }
-        [Required(ErrorMessage ="Phải nhập danh mục sản phẩm")]
+
+        [Required(ErrorMessage = "Phải nhập danh mục sản phẩm")]
         public int? CatId { get; set; }
+
         public int? Price { get; set; }
         public int? Discount { get; set; }
         public string Thumb { get; set; }
@@ -34,7 +36,8 @@ namespace WebShop.Models
         public string Alias { get; set; }
         public string MetaDesc { get; set; }
         public string MetaKey { get; set; }
-        [Required(ErrorMessage =("Phải nhập số lượng"))]
+
+        [Required(ErrorMessage = ("Phải nhập số lượng"))]
         public int? UnitsInStock { get; set; }
 
         public virtual Category Cat { get; set; }

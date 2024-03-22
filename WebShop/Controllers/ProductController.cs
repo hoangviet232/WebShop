@@ -19,6 +19,12 @@ namespace WebShop.Controllers
             _context = context;
         }
 
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            return View(new List<Product>());
+        }
+
         [Route("shop.html", Name = ("ShopProduct"))]
         public IActionResult Index(int? page)
         {

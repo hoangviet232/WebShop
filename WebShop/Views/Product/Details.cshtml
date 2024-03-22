@@ -102,9 +102,7 @@
                                             <a href="danhmuc/@Model.Cat.Alias">@Model.Cat.CatName</a>
                                         </li>
                                     </ul>
-                                </div>
-                                
-                                
+                                </div>                                                               
                             </div>
                         </div>
                         <div class="col-12 order-lg-2 order-1 pt-10 pt-lg-0">
@@ -163,13 +161,13 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
-                            <div class="product-review-body">
-                                <h4 class="heading mb-5">3 Review Items</h4>
+                            <div id="comments" class="product-review-body">
+                                <h4  class="heading mb-5">3 Review Items</h4>
                                 <ul class="user-info-wrap">
                                     <li>
                                         <ul class="user-info">
                                             <li class="user-avatar">
-                                                <img src="~/assets/images/testimonial/user/1.png" alt="User Image">
+                                                <img src="~/assets/images/testimonial/user/doremon.png" alt="User Image">
                                             </li>
                                             <li class="user-comment">
                                                 <div class="rating-box">
@@ -182,13 +180,12 @@
                                                     </ul>
                                                 </div>
                                                 <div class="meta">
-                                                    <span><strong>Oscar -</strong> March 15, 2023</span>
+                                                    <span>
+                                                        <strong>Nobita -</strong> February 25, 2024
+                                                    </span>
                                                 </div>
                                                 <p class="short-desc mb-0">
-                                                    “Sed ligula sapien, fermentum id est eget,
-                                                    viverra auctor sem. Vivamus maximus enim vitae urna porta, ut
-                                                    euismod nibh lacinia ellentesque at diam voluptas quas nisi, culpa
-                                                    in accusantium“
+                                                    “Sản phẩm tốt, giao hàng nhanh, tư vấn rất nhiệt tình 10đ không có nhưng“
                                                 </p>
                                             </li>
                                         </ul>
@@ -196,7 +193,7 @@
                                     <li>
                                         <ul class="user-info">
                                             <li class="user-avatar">
-                                                <img src="~/assets/images/testimonial/user/1.png" alt="User Image">
+                                                <img src="~/assets/images/testimonial/user/xuka.jpg" alt="User Image">
                                             </li>
                                             <li class="user-comment">
                                                 <div class="rating-box">
@@ -209,13 +206,12 @@
                                                     </ul>
                                                 </div>
                                                 <div class="meta">
-                                                    <span><strong>Oscar -</strong> March 15, 2023</span>
+                                                    <span>
+                                                        <strong>Xuka -</strong> February 21, 2024
+                                                    </span>
                                                 </div>
                                                 <p class="short-desc mb-0">
-                                                    “Sed ligula sapien, fermentum id est eget,
-                                                    viverra auctor sem. Vivamus maximus enim vitae urna porta, ut
-                                                    euismod nibh lacinia ellentesque at diam voluptas quas nisi, culpa
-                                                    in accusantium“
+                                                    “Hàng còn xanh tươi lắm, ăn rất ngon. Ủng hộ nhiều lần lắm rồi“
                                                 </p>
                                             </li>
                                         </ul>
@@ -223,7 +219,7 @@
                                     <li>
                                         <ul class="user-info">
                                             <li class="user-avatar">
-                                                <img src="~/assets/images/testimonial/user/1.png" alt="User Image">
+                                                <img src="~/assets/images/testimonial/user/nobita.jpg" alt="User Image">
                                             </li>
                                             <li class="user-comment">
                                                 <div class="rating-box">
@@ -236,13 +232,12 @@
                                                     </ul>
                                                 </div>
                                                 <div class="meta">
-                                                    <span><strong>Oscar -</strong> March 15, 2023</span>
+                                                    <span>
+                                                        <strong>Nobita -</strong> February 22, 2024
+                                                    </span>
                                                 </div>
                                                 <p class="short-desc mb-0">
-                                                    “Sed ligula sapien, fermentum id est eget,
-                                                    viverra auctor sem. Vivamus maximus enim vitae urna porta, ut
-                                                    euismod nibh lacinia ellentesque at diam voluptas quas nisi, culpa
-                                                    in accusantium“
+                                                    “Mọi người nên mua ở đây, giá rất tốt và đi đôi với chất lượng“
                                                 </p>
                                             </li>
                                         </ul>
@@ -261,7 +256,7 @@
                                             <li><i class="pe-7s-star"></i></li>
                                         </ul>
                                     </div>
-                                    <form class="feedback-form pt-8" action="#">
+                                    <form  class="feedback-form pt-8" action="#">
                                         <div class="group-input">
                                             <div class="form-field me-md-6 mb-6 mb-md-0">
                                                 <input type="text" name="name" placeholder="Your Name*" class="input-field">
@@ -274,10 +269,10 @@
                                             </div>
                                         </div>
                                         <div class="form-field mt-6">
-                                            <textarea name="message" placeholder="Message" class="textarea-field"></textarea>
+                                            <textarea type="text" id="newComment" name="message" placeholder="Message" class="textarea-field"></textarea>
                                         </div>
                                         <div class="button-wrap mt-8">
-                                            <button type="submit" value="submit" class="btn btn-custom-size lg-size btn-secondary btn-primary-hover btn-lg rounded-0" name="submit">Submit</button>
+                                            <button onclick="addComment()" type="submit" value="submit" class="btn btn-custom-size lg-size btn-secondary btn-primary-hover btn-lg rounded-0" name="submit">Submit</button>
                                         </div>
                                     </form>
                                 </div>
@@ -287,23 +282,21 @@
                             <div class="product-shipping-body">
                                 <h4 class="title">Shipping</h4>
                                 <p class="short-desc mb-4">
-                                    The item will be shipped from China. So it need 15-20 days to
-                                    deliver. Our product is good with reasonable price and we believe you will worth it.
-                                    So please wait for it patiently! Thanks.Any question please kindly to contact us and
-                                    we promise to work hard to help you to solve the problem
+                                    - Đối với chủ shop online: Đây là một trong những chiến lược giúp thu hút lượng khách hàng mới tiềm năng, thúc đẩy doanh thu, đồng thời tăng khả năng cạnh tranh so với các shop online khác.
+
+                                    - Đối với người mua hàng: Tận hưởng các chương trình miễn phí giao hàng giúp người mua tiết kiệm một phần chi phí, đặc biệt không phải lo về các khoản thu hộ hay chuyển hoàn khác.
                                 </p>
-                                <h4 class="title">About return request</h4>
+                                <h4 class="title">Giá trị cốt lõi</h4>
                                 <p class="short-desc mb-4">
-                                    If you don't need the item with worry, you can contact us
-                                    then we will help you to solve the problem, so please close the return request!
-                                    Thanks
+                                    Sáng tạo & Đổi mới: Sáng tạo & đổi mới để luôn dẫn đầu.
+                                    Tinh Thần Chiến Binh: Tinh thần chiến binh 247, sẵn sàng đối diện mọi thách thức.
+                                    Tôn trọng & Yêu Thương: Tôn trọng & yêu thương, đề cao vai trò con người.
                                 </p>
-                                <h4 class="title">Guarantee</h4>
+                                <h4 class="title">Sứ mệnh doanh nghiệp</h4>
                                 <p class="short-desc mb-0">
-                                    If it is the quality question, we will resend or refund to
-                                    you; If you receive damaged or wrong items, please contact us and attach some
-                                    pictures about product, we will exchange a new correct item to you after the
-                                    confirmation.
+                                    Đối với Nhân viên & Nhà đầu tư
+                                    Xây dựng nên một tổ chức với mô hình kinh doanh vượt trội, từ đó làm phong phú đời sống vật chất và tinh thần của mỗi người.
+                                    Đối với Khách hàng & Xã hội/Cộng đồng
                                 </p>
                             </div>
                         </div>
@@ -423,6 +416,59 @@
             $('#numberCart').load("/AjaxContent/NumberCart");
         }
     });
+
+  
+
 </script>
+
+    <script>
+        // Function to add a new comment
+        function addComment() {
+            // Get the new comment content
+            var newComment = document.getElementById("newComment").value;
+
+            // Create a new list item for the comment
+            var commentItem = document.createElement("li");
+            commentItem.innerHTML = `
+                    <ul class="user-info">
+                        <li class="user-avatar">
+                            <img src="~/assets/images/testimonial/user/your_avatar.png" alt="Your Image">
+                        </li>
+                        <li class="user-comment">
+                            <div class="rating-box">
+                                <ul>
+                                    <li><i class="pe-7s-star"></i></li>
+                                    <li><i class="pe-7s-star"></i></li>
+                                    <li><i class="pe-7s-star"></i></li>
+                                    <li><i class="pe-7s-star"></i></li>
+                                    <li><i class="pe-7s-star"></i></li>
+                                </ul>
+                            </div>
+                            <div class="meta">
+                                <span>
+                                    <strong>Your Name -</strong> ${getCurrentDate()}
+                                </span>
+                            </div>
+                            <p class="short-desc mb-0">${newComment}</p>
+                        </li>
+                    </ul>
+                `;
+
+            // Append the new comment item to the comments list
+            document.getElementById("comments").appendChild(commentItem);
+
+            // Clear the input field after adding the comment
+            document.getElementById("newComment").value = "";
+        }
+
+        // Function to get the current date
+        function getCurrentDate() {
+            var currentDate = new Date();
+            var day = currentDate.getDate();
+            var month = currentDate.getMonth() + 1;
+            var year = currentDate.getFullYear();
+            return month + "/" + day + "/" + year;
+        }
+    </script>
 
 }

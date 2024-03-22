@@ -4,7 +4,9 @@
     <TargetFramework>net5.0</TargetFramework>
     <RollForward>Major</RollForward>
 	  <GenerateOnBuild>false</GenerateOnBuild>
-
+	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
+	  <NoWarn>$(NoWarn);1591</NoWarn>
+	  <AppDesignerFolder>Properties</AppDesignerFolder>
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,7 +35,9 @@
     <None Remove="Views\Search\" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Grpc.Core" Version="2.46.6" />
     <PackageReference Include="MailKit" Version="4.2.0" />
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.3.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.10">
@@ -48,16 +52,13 @@
     <PackageReference Include="AspNetCoreHero.ToastNotification" Version="1.1.0" />
     <PackageReference Include="RazorEngine" Version="3.10.0" />
     <PackageReference Include="RazorLight" Version="2.3.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Areas\Admin\Views\Home\" />
     <Folder Include="Views\Blog\" />
-    <Folder Include="wwwroot\images\pages\" />
-    <Folder Include="Views\Accounts\" />
     <Folder Include="Views\ShoppingCart\" />
-    <Folder Include="Controllers\Components\" />
     <Folder Include="Views\Shared\Components\" />
     <Folder Include="Views\Shared\Components\NumberCart\" />
     <Folder Include="Views\Shared\Components\HeaderCart\" />
@@ -65,8 +66,12 @@
     <Folder Include="Areas\Admin\Views\Account\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Remove="wwwroot\images\page\" />
-    <Content Remove="wwwroot\images\category\" />
-    <Content Remove="wwwroot\images\news\" />
+    <None Include="Properties\launchSettings.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="wwwroot\assets\images\breadcrumb\bg\1-1-1920x373.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 </Project>
