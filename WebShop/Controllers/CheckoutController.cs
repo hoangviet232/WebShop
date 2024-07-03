@@ -136,6 +136,13 @@ namespace WebShop.Controllers
                     // Tạo danh sách chi tiết đơn hàng
                     foreach (var item in cart)
                     {
+                        var product = _context.Products.SingleOrDefault(p => p.ProductId == item.product.ProductId);
+                        if (product.UnitsInStock < item.amount)
+                        {
+                            // Nếu hàng tồn kho không đủ, hiển thị thông báo lỗi
+                            _notyfService.Error("Sản phẩm  đã hết hàng trong kho");
+                            return RedirectToAction("Index");
+                        }
                         OrderDetail orderDetail = new OrderDetail();
                         orderDetail.OrderId = donhang.OrderId;
                         orderDetail.ProductId = item.product.ProductId;
@@ -145,6 +152,8 @@ namespace WebShop.Controllers
                         orderDetail.CreateDate = DateTime.Now;
                         _context.Add(orderDetail);
 
+                        product.UnitsInStock -= item.amount;
+                        _context.Update(product);
                         // Gửi email thông tin đơn hàng
                         // Tính tổng tiền đơn hàng
                         double totalOrderMoney = cart.Sum(item => item.TotalMoney);

@@ -94,6 +94,7 @@ namespace WebShop.Controllers
             }
         }
 
+  
         [Route("/Product/FilterProducts")]
         [HttpGet]
         public IActionResult FilterProducts(int minPrice, int maxPrice, int sortOption)

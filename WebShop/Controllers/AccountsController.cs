@@ -313,27 +313,43 @@ namespace WebShop.Controllers
                 {
                     return RedirectToAction("Login", "Accounts");
                 }
+
                 if (ModelState.IsValid)
                 {
                     var taikhoan = _context.Customers.Find(Convert.ToInt32(taikhoanID));
                     if (taikhoan == null) return RedirectToAction("Login", "Accounts");
+
+                    // Kiểm tra mật khẩu hiện tại
                     var pass = (model.PasswordNow.Trim() + taikhoan.Salt.Trim()).ToMD5();
+                    if (pass != taikhoan.Password)
                     {
-                        string passnew = (model.Password.Trim() + taikhoan.Salt.Trim()).ToMD5();
-                        taikhoan.Password = passnew;
-                        _context.Update(taikhoan);
-                        _context.SaveChanges();
-                        _notyfService.Success("Đổi mật khẩu thành công");
+                        _notyfService.Error("Mật khẩu hiện tại không đúng");
                         return RedirectToAction("Dashboard", "Accounts");
                     }
+
+                    // Kiểm tra mật khẩu mới và xác nhận mật khẩu mới
+                    if (model.Password != model.ConfirmPassword)
+                    {
+                        _notyfService.Error("Mật khẩu mới không khớp");
+                        return RedirectToAction("Dashboard", "Accounts");
+                    }
+
+                    // Nếu mọi thứ hợp lệ, thì thay đổi mật khẩu
+                    string passnew = (model.Password.Trim() + taikhoan.Salt.Trim()).ToMD5();
+                    taikhoan.Password = passnew;
+                    _context.Update(taikhoan);
+                    _context.SaveChanges();
+                    _notyfService.Success("Đổi mật khẩu thành công");
+                    return RedirectToAction("Dashboard", "Accounts");
                 }
             }
             catch
             {
-                _notyfService.Success("Thay đổi mật khẩu không thành công");
+                _notyfService.Error("Thay đổi mật khẩu không thành công");
                 return RedirectToAction("Dashboard", "Accounts");
             }
-            _notyfService.Success("Thay đổi mật khẩu không thành công");
+
+            _notyfService.Error("Thay đổi mật khẩu không thành công");
             return RedirectToAction("Dashboard", "Accounts");
         }
     }

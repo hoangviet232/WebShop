@@ -94,23 +94,6 @@ namespace WebShop
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-
-                /*          endpoints.MapGet("/testmail", async context =>
-                          {
-                              // Lấy dịch vụ sendmailservice
-                              var sendmailservice = context.RequestServices.GetService<ISendMailService>();
-
-                              MailContent content = new MailContent
-                              {
-                                  To = "vietkutioppa@gmail.com",
-                                  Subject = "Kiểm tra thử",
-                                  Body = "<p><strong> Xin chào .net</strong></p>"
-                              };
-
-                              await sendmailservice.SendMail(content);
-                              await context.Response.WriteAsync("Send mail");
-                          }
-                          );*/
             });
         }
     }

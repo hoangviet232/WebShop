@@ -42,7 +42,7 @@
                                         <img class="img-full" src="~/images/products/@Model.Thumb" alt="@Model.Title">
                                     </a>
                                 </div>
-                                   <div class="swiper-slide">
+                                <div class="swiper-slide">
                                     <a href="~/images/products/@Model.Thumb" class="single-img gallery-popup">
                                         <img class="img-full" src="~/images/products/@Model.Thumb" alt="@Model.Title">
                                     </a>
@@ -102,7 +102,7 @@
                                             <a href="danhmuc/@Model.Cat.Alias">@Model.Cat.CatName</a>
                                         </li>
                                     </ul>
-                                </div>                                                               
+                                </div>
                             </div>
                         </div>
                         <div class="col-12 order-lg-2 order-1 pt-10 pt-lg-0">
@@ -156,13 +156,13 @@
                             <div class="product-description-body">
                                 <p class="short-desc mb-0">
                                     @Html.Raw(Model.Description)
-                   
+
                                 </p>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
                             <div id="comments" class="product-review-body">
-                                <h4  class="heading mb-5">3 Review Items</h4>
+                                <h4 class="heading mb-5">3 Review Items</h4>
                                 <ul class="user-info-wrap">
                                     <li>
                                         <ul class="user-info">
@@ -256,7 +256,7 @@
                                             <li><i class="pe-7s-star"></i></li>
                                         </ul>
                                     </div>
-                                    <form  class="feedback-form pt-8" action="#">
+                                    <form class="feedback-form pt-8" action="#">
                                         <div class="group-input">
                                             <div class="form-field me-md-6 mb-6 mb-md-0">
                                                 <input type="text" name="name" placeholder="Your Name*" class="input-field">
@@ -326,8 +326,8 @@
                                                 <div class="product-img img-zoom-effect">
                                                     <a href="@url">
                                                         <img style="width:150%;height:200px" class="img-full" src="~/images/products/@item.Thumb" alt="@item.Title">
-                                                    </a>                                                                               
-                                     
+                                                    </a>
+
                                                 </div>
                                                 <div class="product-content texx">
                                                     <a class="product-name" href="@url">@item.ProductName</a>
@@ -362,64 +362,46 @@
 </main>
 <!-- Main Content Area End Here  -->
 @section Scripts{
-<script>
-    $(document).ready(function () {
-        $(function () {
-            $(".add-to-cart").click(function () {
-                var productid = $('#ProductId').val();
-                var soLuong = $('#txtsoLuong').val();
-                $.ajax({
-                    url: '/api/cart/add',
-                    type: "POST",
-                    dataType: "JSON",
-                    data: {
-                        productID: productid,
-                        amount: soLuong
-                    },
-                    success: function (response) {
-                        if (response.result == 'Redirect') {
-                            window.location = response.url;
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                $(".add-to-cart").click(function () {
+                    var productid = $('#ProductId').val();
+                    var soLuong = $('#txtsoLuong').val();
+                    $.ajax({
+                        url: '/api/cart/add',
+                        type: "POST",
+                        dataType: "JSON",
+                        data: {
+                            productID: productid,
+                            amount: soLuong
+                        },
+                        success: function (response) {
+                            if (response.result == 'Redirect') {
+                                window.location = response.url;
+                            }
+                            else {
+                                loadHeaderCart(); //Add Product success
+                                location.reload();
+                            }
+                            console.log(response); // log to the console to see whether it worked
+                        },
+                        error: function (error) {
+                            alert("There was an error posting the data to the server: " + error.responseText);
                         }
-                        else {
-                            loadHeaderCart(); //Add Product success
-                            location.reload();
-                        }
-                        console.log(response); // log to the console to see whether it worked
-                    },
-                    error: function (error) {
-                        alert("There was an error posting the data to the server: " + error.responseText);
-                    }
+                    });
                 });
-            });
-
-            @*$(".removecart").click(function () {
-                var productid = $(this).attr("data-productid");
-                $.ajax({
-                    url: "api/cart/remove",
-                    type: "POST",
-                    dataType: "JSON",
-                    data: { productID: productid },
-                    success: function (result) {
-                        if (result.success) {
-                            loadHeaderCart();//Reload lai gio hang
-                            location.reload();
-                        }
-                    },
-                    error: function (rs) {
-                        alert("Remove Cart Error !")
-                    }
+       
                 });
-            });*@
+            function loadHeaderCart() {
+                $('#miniCart').load("/AjaxContent/HeaderCart");
+                $('#numberCart').load("/AjaxContent/NumberCart");
+            }
         });
-        function loadHeaderCart() {
-            $('#miniCart').load("/AjaxContent/HeaderCart");
-            $('#numberCart').load("/AjaxContent/NumberCart");
-        }
-    });
 
-  
 
-</script>
+
+    </script>
 
     <script>
         // Function to add a new comment
@@ -430,29 +412,29 @@
             // Create a new list item for the comment
             var commentItem = document.createElement("li");
             commentItem.innerHTML = `
-                    <ul class="user-info">
-                        <li class="user-avatar">
-                            <img src="~/assets/images/testimonial/user/your_avatar.png" alt="Your Image">
-                        </li>
-                        <li class="user-comment">
-                            <div class="rating-box">
-                                <ul>
-                                    <li><i class="pe-7s-star"></i></li>
-                                    <li><i class="pe-7s-star"></i></li>
-                                    <li><i class="pe-7s-star"></i></li>
-                                    <li><i class="pe-7s-star"></i></li>
-                                    <li><i class="pe-7s-star"></i></li>
-                                </ul>
-                            </div>
-                            <div class="meta">
-                                <span>
-                                    <strong>Your Name -</strong> ${getCurrentDate()}
-                                </span>
-                            </div>
-                            <p class="short-desc mb-0">${newComment}</p>
-                        </li>
-                    </ul>
-                `;
+                            <ul class="user-info">
+                                <li class="user-avatar">
+                                    <img src="~/assets/images/testimonial/user/your_avatar.png" alt="Your Image">
+                                </li>
+                                <li class="user-comment">
+                                    <div class="rating-box">
+                                        <ul>
+                                            <li><i class="pe-7s-star"></i></li>
+                                            <li><i class="pe-7s-star"></i></li>
+                                            <li><i class="pe-7s-star"></i></li>
+                                            <li><i class="pe-7s-star"></i></li>
+                                            <li><i class="pe-7s-star"></i></li>
+                                        </ul>
+                                    </div>
+                                    <div class="meta">
+                                        <span>
+                                            <strong>Your Name -</strong> ${getCurrentDate()}
+                                        </span>
+                                    </div>
+                                    <p class="short-desc mb-0">${newComment}</p>
+                                </li>
+                            </ul>
+                        `;
 
             // Append the new comment item to the comments list
             document.getElementById("comments").appendChild(commentItem);
